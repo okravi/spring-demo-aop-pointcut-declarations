@@ -12,7 +12,16 @@ public class MyDemoLoggingAspect {
 	@Pointcut("execution (* com.lc.aopdemo.dao.*.*(..))")
 	private void forDaoPackage() {}
 	
-	@Before("forDaoPackage()")
+	@Pointcut("execution (* com.lc.aopdemo.dao.*.get*(..))")
+	private void getter() {}
+	
+	@Pointcut("execution (* com.lc.aopdemo.dao.*.set*(..))")
+	private void setter() {}
+	
+	@Pointcut("forDaoPackage() && !(getter() || setter())")
+	private void forDaoPackageNoGetterSetter() {}
+	
+	@Before("forDaoPackageNoGetterSetter()")
 	public void beforeAddAccountAdvice() {
 		
 		System.out.println("\n ====> Executing @Before advice");

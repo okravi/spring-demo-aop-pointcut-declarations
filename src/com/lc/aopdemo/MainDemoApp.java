@@ -26,6 +26,8 @@ public class MainDemoApp {
 		
 		theMembershipDAO.goToSleep();
 		
+		theAccountDAO.setName("Robli");
+		
 		//close the context
 		context.close();
 	}

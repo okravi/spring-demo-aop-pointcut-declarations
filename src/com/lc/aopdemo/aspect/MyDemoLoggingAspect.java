@@ -3,6 +3,7 @@ package com.lc.aopdemo.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -71,6 +72,12 @@ public class MyDemoLoggingAspect {
 			}
 		}
 		
+	}
+	
+	@After("com.lc.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterSetter()")
+	public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint) {
+		
+		System.out.println("\n ====> Executing @After Advice");
 	}
 	
 }

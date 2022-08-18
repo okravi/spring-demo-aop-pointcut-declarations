@@ -1,6 +1,9 @@
 package com.lc.aopdemo.aspect;
 
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -38,6 +41,36 @@ public class MyDemoLoggingAspect {
 
 			}
 		}
+	}
+	
+	@AfterReturning(
+			pointcut="execution (* com.lc.aopdemo.dao.AccountDAO.findAccounts(..))",
+			returning="result"
+			)
+	public void afterReturningFindAccountsAdvice(
+			JoinPoint theJoinPoint, List<Account> result) {
+		
+			//print the method we're advising on
+			String method = theJoinPoint.getSignature().toShortString();
+			System.out.println("\n");
+			System.out.println(" ====> Executing @AfterReturning advice");
+			System.out.println("Advising on method: " + method);
+			System.out.println("Result is: " + result);
+			
+			//post-process the data
+			convertAccountNamesToUpperCase(result);
+		
+	}
+
+	private void convertAccountNamesToUpperCase(List<Account> result) {
+		
+		if (result!=null) {
+			for (Account acc : result) {
+				String theUpperName = acc.getName().toUpperCase();
+				acc.setName(theUpperName);
+			}
+		}
+		
 	}
 	
 }

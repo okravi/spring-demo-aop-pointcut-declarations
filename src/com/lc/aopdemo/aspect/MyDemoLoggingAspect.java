@@ -3,8 +3,10 @@ package com.lc.aopdemo.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -78,6 +80,31 @@ public class MyDemoLoggingAspect {
 	public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint) {
 		
 		System.out.println("\n ====> Executing @After Advice");
+	}
+	
+	@Around("execution (* com.lc.aopdemo.service.*.getFortune(..))")
+	public Object aroundGetFortune(ProceedingJoinPoint theProceedingJoinPoint) throws Throwable {
+		
+		//print out metod
+		System.out.println(" ====> Executing @Around advice");
+		String method = theProceedingJoinPoint.getSignature().toShortString();
+		System.out.println("Advising on method: " + method);
+
+		//get begin timestamp
+		long begin = System.currentTimeMillis();
+		
+		//execute method
+		Object result = theProceedingJoinPoint.proceed();
+		
+		//get end timestamp
+		long end = System.currentTimeMillis();
+
+		//calculate duration
+		System.out.println("Spent time: " + (end - begin));
+		
+		//return result to the caller
+		return result;
+		
 	}
 	
 }
